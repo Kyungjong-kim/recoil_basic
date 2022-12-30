@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Recoil 기초 공부
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 2022.12.30 - todo 리스트 구현을 통한 recoil 구조 파악
 
-## Available Scripts
+- [x] 리코일 atom, selector를 통한 상태관리 이해
+- [ ] 리코일 이론 정리 진행중.
 
-In the project directory, you can run:
+## Recoil 개념
 
-### `npm start`
+### atom
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Recoil의 상태를 표현한다.\
+atom() 함수는 쓰기가 가능한 RecoilState를 Return 한다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+> 구조
 
-### `npm test`
+```javscript
+function atom<T>({
+  key:string,
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  default: T | Promise<T> | RecoilValue<T>,
 
-### `npm run build`
+  effects_UNSTABLE?: $ReadOnlyArray<AtomEffect<T>>,
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  dangerouslyAllowMutability?: boolean
+})
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- key - 내부적으로 atom을 식별하는데 사용되는 고유한 문자열. 앱 전체에서 다른 atom, selector에 대해 유일해야함.
+- default - atom의 초기값, Promise, 동일한 타입 값을 나타내는 atom 이나 selector
+- effects_UNSTABLE - atom을 위한 Atom Effects 배열 (심화 공부 필요)
+- dangerouslyAllowMutability - 상태의 변화를 나타내지 않는 atom에 저장된 object의 변화를 허용해야 할때가 있음.
+  개발 모드에서 동결 개체를 재정의하려면 이 옵션을 사용.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+자주 사용되는 Hooks
 
-### `npm run eject`
+- useRecoilState() : atom 을 읽고 쓰려고 할 때 사용함. atom에 컴포넌트를 등록하도록 한다.
+- useRecoilValue() : atom 을 읽기만 할 때 사용 atom에 컴포넌트를 등록하도록 한다.
+- useSetRecoilState() : atom 에 쓰기만 할 때 사용.
+- useResetRecoilState() : atom을 초기화 할 때 사용.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+\*\* 컴포넌트 등록 없이 atom의 값을 읽어야 하는 드문 케이스에서는 useRecoilCallback() 을 참조.
