@@ -50,7 +50,7 @@ set 함수도 제공되면 RecoilState를 반환한다.
 
 > 구조
 
-```javscript
+```javascript
 function selector<T>({
   key: string,
 
@@ -88,44 +88,44 @@ type ResetRecoilState = <T>(RecoilState<T>) => void;
   반환해야 한다.
   이를 보호하기 위해 selector에 저장된 모든 값은 기본적으로 고정되어 있다. 경우에 따라 이 옵션을 사용하여 재정의해야 할 수 있다.
 
-```javscript
-  // Selector 정적 의존성
-  const staticSelector = selector({
-    key: 'StaticSelector',
-    get: ({get})=>get(myAtom)*100,
-  });
-  // Selector 동적 의존성
-  const dynamicSelector = selector({
-    key: 'DynamicSelector',
-    get: ({get})=> {
-      const toggle = get(toggleState);
-      if (toggle) {
-        return get(selectrorA)
-      } else {
-        return get(selectorB)
-      }
+```javascript
+// Selector 정적 의존성
+const staticSelector = selector({
+  key: "StaticSelector",
+  get: ({ get }) => get(myAtom) * 100,
+});
+// Selector 동적 의존성
+const dynamicSelector = selector({
+  key: "DynamicSelector",
+  get: ({ get }) => {
+    const toggle = get(toggleState);
+    if (toggle) {
+      return get(selectrorA);
+    } else {
+      return get(selectorB);
     }
-  })
-  // Selector 쓰기가능
-  const proxySelector = selector({
-    key: 'ProxySelector',
-    get: ({get}) => ({...get(myAtom), extraField: 'hi'}),
-    set: ({set}, newValue) => set(myAtom, newValue),
-  });
-  // 데이터를 변환시 DefaultValue 인지 확인이 필요함.
-  const transformSelector = selector({
-    key: 'TransformSelector',
-    get: ({get}) => get(myAtom) * 100,
-    set: ({set}, newValue) =>
-      set(myAtom, newValue instanceof DefaultValue ? newValue : newValue / 100),
-  });
-  // 비동기 Selector
-  const myQuery = selector({
-    key: 'MyQuery',
-    get: async ({get}) => {
-      return await myAsyncQuery(get(queryParamState));
-    },
-  });
+  },
+});
+// Selector 쓰기가능
+const proxySelector = selector({
+  key: "ProxySelector",
+  get: ({ get }) => ({ ...get(myAtom), extraField: "hi" }),
+  set: ({ set }, newValue) => set(myAtom, newValue),
+});
+// 데이터를 변환시 DefaultValue 인지 확인이 필요함.
+const transformSelector = selector({
+  key: "TransformSelector",
+  get: ({ get }) => get(myAtom) * 100,
+  set: ({ set }, newValue) =>
+    set(myAtom, newValue instanceof DefaultValue ? newValue : newValue / 100),
+});
+// 비동기 Selector
+const myQuery = selector({
+  key: "MyQuery",
+  get: async ({ get }) => {
+    return await myAsyncQuery(get(queryParamState));
+  },
+});
 ```
 
 ### Loadable
